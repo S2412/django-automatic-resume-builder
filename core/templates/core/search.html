@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Employee & Generate Resume</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <style>
+        .search-container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+         body {
+      background: linear-gradient(135deg, #007bff, #00c6ff);
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-container text-center">
+            <h4 class="mb-4"><i class="bi bi-search"></i> Search Employee & Generate Resume</h4>
+            <form method="GET" action="{% url 'download_resume' %}">
+                <div class="input-group mb-3">
+                    <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                    <input type="text" id="searchBox" name="query" class="form-control" placeholder="Enter Employee ID or Name" required>
+                </div>
+                <button class="btn btn-primary w-100" type="submit">
+                    <i class="bi bi-file-earmark-arrow-down"></i> Generate Resume
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $(function() {
+            $("#searchBox").autocomplete({
+                source: "{% url 'employee_autocomplete' %}"
+            });
+        });
+    </script>
+</body>
+</html>

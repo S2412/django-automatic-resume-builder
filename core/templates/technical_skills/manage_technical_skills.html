@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Technical Skills</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding: 1.5rem 1rem;
+        }
+        .sidebar h4 {
+            color: #fff;
+            text-align: center;
+        }
+        .sidebar a {
+            color: #ddd;
+            display: block;
+            margin: 10px 0;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            color: #fff;
+        }
+        .main {
+            flex-grow: 1;
+            padding: 2rem;
+        }
+        .card {
+            border-radius: 10px;
+        }
+        .btn-rounded {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h4><i class="fas fa-user-cog"></i> Admin Panel</h4>
+    <a href="{% url 'manage_employees' %}"><i class="fas fa-users"></i> Manage Employees</a>
+    <a href="{% url 'manage_projects'%}"><i class="fas fa-project-diagram"></i> Projects</a>
+    <a href="{% url 'manage_mappings' %}"><i class="fas fa-link"></i> Employee Mappings</a>
+    <a href="{% url 'manage_technical_skills' %}" class="active"><i class="fas fa-tools"></i> Manage Technical Skills</a>
+    <a href="{% url 'search_employee' %}"><i class="fas fa-file-alt"></i> Resumes</a>
+    <a href="{% url 'logout_confirm' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="fas fa-tools"></i> Manage Technical Skills</h3>
+        </div>
+        <div class="card-body">
+            <!-- Search -->
+            <form method="GET" class="form-inline mb-4">
+                <div class="input-group w-100">
+                    <input type="text" name="q" class="form-control" placeholder="Search by employee name" value="{{ query }}">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary btn-rounded" type="submit"><i class="fas fa-search"></i> Search</button>
+                        <a href="{% url 'manage_technical_skills' %}" class="btn btn-outline-secondary btn-rounded ml-2">Reset</a>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Emp ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       {% for emp in page_obj %}
+    <tr>
+        <td>{{ emp.employee_id }}</td>
+        <td>{{ emp.full_name }}</td>
+        <td>{{ emp.email }}</td>
+        <td>
+            {% if emp.technical_skill.exists %}
+    <a href="{% url 'edit_technical_skill' emp.technical_skill.first.id %}" class="btn btn-sm btn-info btn-rounded">
+        <i class="fas fa-edit"></i> Edit
+    </a>
+    <a href="{% url 'delete_technical_skill' emp.technical_skill.first.id %}" class="btn btn-sm btn-danger btn-rounded">
+        <i class="fas fa-trash-alt"></i> Delete
+    </a>
+{% else %}
+    <a href="{% url 'add_technical_skill' emp.id %}" class="btn btn-sm btn-success btn-rounded">
+        <i class="fas fa-plus"></i> Add
+    </a>
+{% endif %}
+         
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="4" class="text-center text-muted">No employees found.</td>
+    </tr>
+{% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                    </li>
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ employee.full_name }} - Resume</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #000;
+        }
+        .header {
+            text-align: right;
+            border-bottom: 2px solid #00bcd4;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+
+        .logo {
+            float: left;
+            height: 60px;
+        }
+        .company-name {
+            color: #00bcd4;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .section-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+        ul {
+            margin-top: 5px;
+        }
+        .skills-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .skills-table td {
+            padding: 3px 5px;
+            vertical-align: top;
+        }
+        .project {
+            margin-top: 15px;
+        }
+        .project-title {
+            font-weight: bold;
+        }
+        @page {
+        size: A4 portrait;
+        margin-bottom: 50pt;
+        
+        @frame footer_frame {
+            -pdf-frame-content: footer_content;
+            left: 30pt; 
+            width: 512pt;
+            top: 772pt;
+            height: 50pt; /* Increased height to avoid cutoff */
+        }
+    }
+
+
+
+
+
+    </style>
+</head>
+<body>
+     >
+    {% if logo_uri %}
+        <img src="{{ logo_uri }}" class="logo" alt="Logo">
+    {% endif %}
+    
+    <div class="header">
+        <div class="company-name">PACE WISDOM SOLUTIONS PVT. LTD.</div>
+    </div>
+
+    <p><strong>Name:</strong> {{ employee.full_name }}</p>
+    <p><strong>Designation:</strong> {{ employee.designation }}</p>
+
+    <div class="section-title">Professional Summary:</div>
+    <ul>
+        <li>{{ employee.summary }}</li>
+    </ul>
+
+    <div class="section-title">Technical Skill Set</div>
+
+{% if employee.technical_skill.exists %}
+<table class="skills-table">
+    {% for skill in employee.technical_skill.all %}
+        <tr><td><strong>Programming and Scripting</strong></td><td>: {{ skill.programming_and_scripting }}</td></tr>
+        <tr><td><strong>Frameworks</strong></td><td>: {{ skill.frameworks }}</td></tr>
+        <tr><td><strong>Development Tools</strong></td><td>: {{ skill.development_tools }}</td></tr>
+        <tr><td><strong>Web API Tools</strong></td><td>: {{ skill.web_api_tools }}</td></tr>
+        <tr><td><strong>Operating System and Version</strong></td><td>: {{ skill.operating_system_and_version }}</td></tr>
+        <tr><td><strong>Tools</strong></td><td>: {{ skill.tools }}</td></tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No technical skills data available.</p>
+{% endif %}
+    <div class="section-title">Professional Projects</div>
+    {% for mapping in employee.employeeprojectmapping_set.all %}
+        <div class="project">
+            <p class="project-title">Project {{ forloop.counter }}: {{ mapping.project.title }}</p>
+            <p><strong>Technology used</strong>: {{ mapping.project.technology_used }}</p>
+            <p><strong>Description</strong>: {{ mapping.project.description }}</p>
+            <p><strong>Role and Responsibilities:</strong></p>
+            <ul>
+                {% for line in mapping.responsibilities.splitlines %}
+                    <li>{{ line }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+  
+
+<div id="footer_content">
+    <hr style="border: 0.5px solid #000;"> <!-- Footer Line -->
+    <div style="text-align: left; font-size: 10pt;">
+        <p>© Pace Wisdom Solutions Pvt. Ltd. All rights reserved.
+            
+        </p>
+
+    </div>
+    <div style="text-align: right; font-size: 10pt; position: absolute; right: 30px; bottom: 5px;">
+        Page <pdf:pagenumber> of <pdf:pagecount>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

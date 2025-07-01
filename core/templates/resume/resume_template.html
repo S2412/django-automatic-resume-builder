@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ employee.full_name }} - Resume</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 30px; 
+            line-height: 1.6; 
+        }
+        /* Header: flex to put logo left and company name right */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid #00bcd4; /* Blue line */
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .logo {
+            max-height: 80px;
+        }
+        /* Company name on right in blue */
+        .company-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00bcd4;
+        }
+        .section-title {
+            font-size: 18px; 
+            font-weight: bold; 
+            margin-top: 20px; 
+            border-bottom: 1px solid #ccc; 
+            padding-bottom: 3px;
+        }
+        .info {
+            margin-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .footer-content {
+    border-top: 3px solid #020505;
+    padding-top: 10px;
+    text-align: left;
+    margin-top: 30px;
+    font-size: 15px;
+}
+
+   
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    {% if logo_uri %}
+        <img src="{{ logo_uri }}" class="logo" alt="Logo">
+    {% endif %}
+    <div class="company-name">PACE WISDOM SOLUTIONS PVT. LTD.</div>
+</div>
+
+<div class="section">
+    <h1>{{ employee.full_name }}</h1>
+    <p>{{ employee.email }} | {{ employee.phone }} | {{ employee.address }}</p>
+</div>
+
+<div class="section">
+    <div class="section-title">Professional Summary</div>
+    <p>{{ employee.summary }}</p>
+</div>
+
+<div class="section">
+    <div class="section-title">Experience</div>
+    <p>{{ employee.experience_years }} years of experience</p>
+</div>
+
+<div class="section">
+    <div class="section-title">Technical Skills</div>
+    {% if skills %}
+        {% for skill in skills %}
+        <table>
+            <tbody>
+                <tr><th>Programming & Scripting</th><td>{{ skill.programming_and_scripting }}</td></tr>
+                <tr><th>Frameworks</th><td>{{ skill.frameworks }}</td></tr>
+                <tr><th>Development Tools</th><td>{{ skill.development_tools }}</td></tr>
+                <tr><th>Web API Tools</th><td>{{ skill.web_api_tools }}</td></tr>
+                <tr><th>Operating System & Version</th><td>{{ skill.operating_system_and_version }}</td></tr>
+                <tr><th>Tools</th><td>{{ skill.tools }}</td></tr>
+            </tbody>
+        </table>
+        {% endfor %}
+    {% else %}
+        <p>No technical skills available.</p>
+    {% endif %}
+</div>
+
+<div class="section">
+    <div class="section-title">Projects</div>
+    {% for project in projects %}
+        <div class="info">
+            <strong>{{ project.project.title }}</strong> – {{ project.role }}<br>
+            <small>{{ project.responsibilities }}</small>
+        </div>
+    {% empty %}
+        <p>No projects assigned.</p>
+    {% endfor %}
+</div>
+ <div id="footer" pdf:footer="page-footer">
+        <div class="footer-content">
+            © Pace Wisdom Solutions Pvt. Ltd. All rights reserved.<br>
+            #123, 4th Floor, ABC Tech Park, Bangalore, India<br>
+            Email: contact@pacewisdom.in | www.pacewisdom.in
+        </div>
+    </div>
+</body>
+</html>

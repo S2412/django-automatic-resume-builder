@@ -1,0 +1,143 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Home | Resume Builder{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="text-center py-5" data-aos="fade-up">
+  <img src="{% static 'images/logo.jpg' %}" alt="Resume Builder Logo" width="120" class="mb-3" />
+  <h1 class="display-4 text-white">Welcome to Resume Builder</h1>
+  <p class="lead text-light">Generate professional resumes in seconds by simply selecting your profile.</p>
+<div class="container mt-5 text-center">
+    {% if user.is_authenticated %}
+        <!-- Common resume button for all authenticated users -->
+        <a href="{% url 'edit_resume' %}" class="btn btn-warning m-2">
+            Edit & Generate Resume
+        </a>
+
+        {% if user.is_superuser %}
+            <!-- Superuser gets admin-only functionality -->
+            <a href="{% url 'admin:core_employee_changelist' %}" class="btn btn-outline-warning m-2">
+                Admin Dashboard
+            </a>
+            <a href="{% url 'search_employee' %}" class="btn btn-warning m-2">
+                Search and Generate Resume for Any Employee
+            </a>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'login' %}" class="btn btn-warning m-2">
+            Login to Generate Resume
+        </a>
+    {% endif %}
+</div>
+    
+
+</div>
+
+<!-- About Section -->
+<section class="container py-5" data-aos="fade-up">
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card bg-dark text-white shadow h-100" data-aos="fade-right">
+        <div class="card-body">
+          <h4 class="card-title">Our Mission</h4>
+          <p class="card-text">
+            To simplify resume creation by allowing employees to pull their stored information and generate a complete resume with one click.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card bg-dark text-white shadow h-100" data-aos="fade-left">
+        <div class="card-body">
+          <h4 class="card-title">Why Choose Us?</h4>
+          <p class="card-text">
+            - One-click PDF generation <br>
+            - Auto-mapped project experience <br>
+            - Secure & efficient <br>
+            - Clean, responsive design
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="container py-5" data-aos="fade-up">
+  <h2 class="text-center text-white mb-4">Meet Our Team</h2>
+  <div class="row g-4">
+    <div class="col-md-4 text-center" data-aos="zoom-in">
+      <img src="{% static 'images/team1.jpg' %}" class="rounded-circle mb-3" width="120" height="120" alt="Team Member 1">
+      <h5 class="text-white">Aarav Kumar</h5>
+      <p class="text-light">Lead Developer</p>
+    </div>
+    <div class="col-md-4 text-center" data-aos="zoom-in">
+      <img src="{% static 'images/team2.jpg' %}" class="rounded-circle mb-3" width="120" height="120" alt="Team Member 2">
+      <h5 class="text-white">Riya Shah</h5>
+      <p class="text-light">UI/UX Designer</p>
+    </div>
+    <div class="col-md-4 text-center" data-aos="zoom-in">
+      <img src="{% static 'images/team3.jpg' %}" class="rounded-circle mb-3" width="120" height="120" alt="Team Member 3">
+      <h5 class="text-white">Dev Patel</h5>
+      <p class="text-light">Backend Engineer</p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Testimonials -->
+<section class="container py-5" data-aos="fade-up">
+  <h2 class="text-center text-white mb-4">What Users Say</h2>
+  <div class="row g-4">
+    <div class="col-md-6" data-aos="fade-right">
+      <div class="card bg-secondary text-white shadow">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>"Amazing! I generated my resume in less than a minute."</p>
+            <footer class="blockquote-footer text-white-50">Priya Singh</footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6" data-aos="fade-left">
+      <div class="card bg-secondary text-white shadow">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>"Very professional output. Saved me hours of work."</p>
+            <footer class="blockquote-footer text-white-50">Kunal Mehta</footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Contact Section -->
+<section class="container py-5" data-aos="fade-up">
+  <h2 class="text-center text-white mb-4">Get In Touch</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <input type="text" class="form-control" placeholder="Your Name" required>
+        </div>
+        <div class="mb-3">
+          <input type="email" class="form-control" placeholder="Your Email" required>
+        </div>
+        <div class="mb-3">
+          <textarea class="form-control" rows="4" placeholder="Your Message" required></textarea>
+        </div>
+        <div class="text-center">
+          <button class="btn btn-warning px-4">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
